@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trek & Trail | Epic Adventures</title>
+    <style>
+        /* --- CSS Variables for Theming --- */
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --secondary-color: #f57c00;
+            --bg-color: #f9fafb;
+            --surface-color: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4caf50;
+            --primary-hover: #81c784;
+            --secondary-color: #ff9800;
+            --bg-color: #111827;
+            --surface-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+
+        /* --- Layout & Typography --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        h1, h2, h3 {
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-main);
+        }
+
+        section {
+            padding: 6rem 0;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(var(--surface-color), 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 70px;
+            background: linear-gradient(135deg, rgba(46,125,50,0.8) 0%, rgba(27,94,32,0.9) 100%), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.1"><path d="M0 100 L50 0 L100 100 Z" fill="%23fff"/></svg>');
+            background-size: cover;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background-color: #e65100;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* --- Destinations / Treks --- */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .treks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .trek-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trek-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .trek-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--border-color); /* Fallback loading color */
+        }
+
+        .trek-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .trek-card:hover .trek-image img {
+            transform: scale(1.05);
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: rgba(255,255,255,0.9);
+            color: #1f2937;
+            z-index: 2;
+        }
+
+        .trek-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trek-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .trek-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .trek-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        /* --- Interactive Checklist --- */
+        .checklist-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checklist-item:hover {
+            background-color: var(--bg-color);
+        }
+
+        .checklist-item.checked {
+            background-color: var(--bg-color);
+            opacity: 0.7;
+        }
+
+        .checklist-item.checked .item-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .checklist-item.checked .checkbox {
+            background-color: var(--primary-color);
+        }
+
+        .checklist-item.checked .checkbox::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+        }
+
+        .item-text {
+            flex-grow: 1;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #111827;
+            color: #f9fafb;
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* --- Media Queries --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Simplification for mobile */
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            section {
+                padding: 4rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+                Trek & Trail
+            </a>
+            <div class="nav-links">
+                <a href="#destinations">Destinations</a>
+                <a href="#gear">Preparation</a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                    <!-- Sun/Moon Icon managed by JS -->
+                    <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Wild Side</h1>
+            <p>Embark on unforgettable journeys across the globe's most breathtaking landscapes. From gentle hills to majestic peaks, find the trek that calls to you.</p>
+            <a href="#destinations" class="btn btn-primary">Find Your Trek</a>
+        </div>
+    </header>
+
+    <!-- Destinations Section -->
+    <main>
+        <section id="destinations" class="container">
+            <h2 class="section-title">Explore Routes</h2>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Treks</button>
+                <button class="filter-btn" data-filter="easy">Easy (Beginner)</button>
+                <button class="filter-btn" data-filter="moderate">Moderate</button>
+                <button class="filter-btn" data-filter="hard">Hard (Expert)</button>
+            </div>
+
+            <!-- Treks Grid -->
+            <div class="treks-grid" id="treksGrid">
+                <!-- Cards generated by JS or hardcoded -->
+                <article class="trek-card" data-diff="hard">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=600" alt="Everest Base Camp in the Himalayas">
+                        <span class="difficulty-badge">Hard</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Everest Base Camp</h3>
+                        <p class="trek-desc">A challenging but rewarding trek to the base of the world's highest mountain. Experience Sherpa culture and stunning Himalayan views.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 14 Days</span>
+                            <span>📍 Nepal</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="trek-card" data-diff="easy">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?auto=format&fit=crop&q=80&w=600" alt="Colorful houses of Cinque Terre">
+                        <span class="difficulty-badge">Easy</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Cinque Terre Coastal Trail</h3>
+                        <p class="trek-desc">A beautiful coastal walk connecting five colorful Italian villages. Perfect for beginners and photography enthusiasts.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 2 Days</span>
+                            <span>📍 Italy</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="trek-card" data-diff="moderate">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&q=80&w=600" alt="Machu Picchu ruins in the Andes">
+                        <span class="difficulty-badge">Moderate</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Inca Trail to Machu Picchu</h3>
+                        <p class="trek-desc">Hike through Andean mountains, cloud forests, and ancient ruins culminating in the spectacular lost city of the Incas.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 4 Days</span>
+                            <span>📍 Peru</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="trek-card" data-diff="moderate">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=600" alt="Mountains of the Tour du Mont Blanc">
+                        <span class="difficulty-badge">Moderate</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Tour du Mont Blanc</h3>
+                        <p class="trek-desc">Circumnavigate the Mont Blanc massif, crossing through France, Italy, and Switzerland. Alpine meadows and glaciers await.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 11 Days</span>
+                            <span>📍 Europe</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="trek-card" data-diff="easy">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1529184511211-e63d41f32a76?auto=format&fit=crop&q=80&w=600" alt="Zion Narrows canyon river">
+                        <span class="difficulty-badge">Easy</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Zion Narrows</h3>
+                        <p class="trek-desc">Wade through the virgin river surrounded by thousand-foot sandstone walls in this unique canyon hike.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 1 Day</span>
+                            <span>📍 USA</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="trek-card" data-diff="hard">
+                    <div class="trek-image">
+                        <img src="https://images.unsplash.com/photo-1589553416260-1573b94b0558?auto=format&fit=crop&q=80&w=600" alt="Mount Kilimanjaro peak">
+                        <span class="difficulty-badge">Hard</span>
+                    </div>
+                    <div class="trek-content">
+                        <h3 class="trek-title">Mount Kilimanjaro</h3>
+                        <p class="trek-desc">Summit the roof of Africa. Trek through five distinct climate zones to reach the glacial peak of this dormant volcano.</p>
+                        <div class="trek-meta">
+                            <span>⏱ 7 Days</span>
+                            <span>📍 Tanzania</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Interactive Checklist Section -->
+        <section id="gear" class="container" style="background-color: var(--bg-color);">
+            <h2 class="section-title">Essential Gear Checklist</h2>
+            <div class="checklist-container">
+                <p style="text-align: center; margin-bottom: 1rem; color: var(--text-muted);">Pack smart. Track your preparation.</p>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div id="checklist">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">Well-fitted Hiking Boots</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">Waterproof Shell Jacket</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">30L-40L Backpack</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">First Aid Kit & Blister Plasters</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">Reusable Water Bottles (2L min)</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checkbox"></div>
+                        <span class="item-text">High-Energy Snacks</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Trek & Trail</div>
+                <p>Inspiring global exploration since 2026. Code with nature in mind.</p>
+            </div>
+            <p style="color: #6b7280; font-size: 0.9rem;">&copy; 2026 Trek & Trail Adventures. Built as a single file.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- Theme Toggle Logic ---
+        const htmlElement = document.documentElement;
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        // Check local storage or system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDark = prefersDark;
+        
+        // Initial setup
+        updateTheme();
+
+        themeToggleBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            updateTheme();
+        });
+
+        function updateTheme() {
+            if (isDark) {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'; // Sun icon
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'; // Moon icon
+            }
+        }
+
+        // --- Filtering Logic ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const trekCards = document.querySelectorAll('.trek-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                trekCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-diff') === filterValue) {
+                        card.style.display = 'flex';
+                        // Small animation effect
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // --- Checklist Logic ---
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const items = document.querySelectorAll('.checklist-item');
+            const checkedItems = document.querySelectorAll('.checklist-item.checked');
+            const progressBar = document.getElementById('progressFill');
+            
+            const percentage = (checkedItems.length / items.length) * 100;
+            progressBar.style.width = percentage + '%';
+            
+            // Change color when complete
+            if (percentage === 100) {
+                progressBar.style.backgroundColor = '#f57c00'; // secondary color
+            } else {
+                progressBar.style.backgroundColor = 'var(--primary-color)';
+            }
+        }
+
+        // Initialize progress bar
+        updateProgress();
+
+        // --- Smooth Scrolling for Nav Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const headerOffset = 70;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
